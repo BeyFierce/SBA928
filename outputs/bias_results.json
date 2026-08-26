@@ -1,0 +1,42 @@
+{
+  "comparison_guard_cases": {
+    "fatigue_applicable": 5,
+    "records": 8,
+    "reported_fine_tuned_successes": 0
+  },
+  "profile_dataset": {
+    "education_illiterate_records": 0,
+    "fatigue_rule_records": 34,
+    "fatigue_rule_share": 0.18888888888888888,
+    "marital_unknown_records": 0,
+    "records": 180
+  },
+  "scope_limits": {
+    "country": "Portugal",
+    "duration_excluded_for_leakage": true,
+    "institution_count": 1,
+    "period": "May 2008-November 2010",
+    "unrecorded_attributes": [
+      "race",
+      "ethnicity",
+      "income",
+      "region"
+    ]
+  },
+  "source": {
+    "education_illiterate": {
+      "conversions": 4,
+      "rate": 0.2222222222222222,
+      "rows": 18
+    },
+    "job_rate_range": {
+      "blue-collar": 0.06894315971471796,
+      "student": 0.3142857142857143
+    },
+    "marital_unknown": {
+      "rate": 0.15,
+      "rows": 80
+    },
+    "rows": 41188
+  }
+}

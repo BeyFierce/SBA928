@@ -1,0 +1,74 @@
+SBA 928 DATASET STATISTICS
+==========================
+Rows: 41,188
+Overall conversion rate: 11.27%
+Leakage control: duration is absent from the cleaned dataset
+Source period: May 2008 through November 2010
+
+Conversion by occupation
+segment	rows	conversions	rate
+student	875	275	31.43%
+retired	1720	434	25.23%
+unemployed	1014	144	14.20%
+admin.	10422	1352	12.97%
+management	2924	328	11.22%
+unknown	330	37	11.21%
+technician	6743	730	10.83%
+self-employed	1421	149	10.49%
+housemaid	1060	106	10.00%
+entrepreneur	1456	124	8.52%
+services	3969	323	8.14%
+blue-collar	9254	638	6.89%
+
+Conversion by education
+segment	rows	conversions	rate
+illiterate	18	4	22.22%
+unknown	1731	251	14.50%
+university.degree	12168	1670	13.72%
+professional.course	5243	595	11.35%
+high.school	9515	1031	10.84%
+basic.4y	4176	428	10.25%
+basic.6y	2292	188	8.20%
+basic.9y	6045	473	7.82%
+
+Conversion by marital status
+segment	rows	conversions	rate
+unknown	80	12	15.00%
+single	11568	1620	14.00%
+divorced	4612	476	10.32%
+married	24928	2532	10.16%
+
+Conversion by age cohort
+segment	rows	conversions	rate
+66+	619	290	46.85%
+18-25	1666	349	20.95%
+56-65	2963	451	15.22%
+26-35	14847	1740	11.72%
+46-55	8249	717	8.69%
+36-45	12844	1093	8.51%
+
+Conversion by month
+segment	rows	conversions	rate
+mar	546	276	50.55%
+dec	182	89	48.90%
+sep	570	256	44.91%
+oct	718	315	43.87%
+apr	2632	539	20.48%
+aug	6178	655	10.60%
+jun	5318	559	10.51%
+nov	4101	416	10.14%
+jul	7174	649	9.05%
+may	13769	886	6.43%
+
+Conversion by prior outcome
+segment	rows	conversions	rate
+success	1373	894	65.11%
+failure	4252	605	14.23%
+nonexistent	35563	3141	8.83%
+
+Macroeconomic indicator ranges
+emp.var.rate	min=-3.400	max=1.400
+cons.price.idx	min=92.201	max=94.767
+cons.conf.idx	min=-50.800	max=-26.900
+euribor3m	min=0.634	max=5.045
+nr.employed	min=4963.600	max=5228.100

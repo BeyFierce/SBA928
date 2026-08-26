@@ -1,0 +1,33 @@
+SBA 928 — REPORTED BASE VS FINE-TUNED COMPARISON
+================================================
+
+Provenance: recovered from the submitted SBA928_report.md. Run compare_models.py after training to generate fresh outputs for all eight held-out guard cases.
+
+EVALUATION 3
+Context: Age 46 (46-55), technician, university.degree, married, housing loan yes, personal loan no, cellular, August, 14 contacts this campaign, prior outcome nonexistent, Euribor 3m 4.962.
+
+Base:
+Euribor 3m is 4.962.
+
+Fine-tuned:
+Conversion likelihood: Low. Strongest signal: education level at 13.7%. Weakest signal: age cohort at 8.7%, against a 11.3% overall benchmark. Primary barrier: below-average response for this age cohort. Recommendation: deprioritize; retarget after 90 days with a lower-minimum product.
+
+Reference:
+Conversion likelihood: Moderate. Strongest signal: education level at 13.7%. Weakest signal: age cohort at 8.7%, against a 11.3% overall benchmark. Primary barrier: repeated contact fatigue (14 contacts this campaign). Recommendation: include in standard outreach with a tailored rate offer.
+
+ASSESSMENT
+- Relevance: fine-tuned addressed the requested analysis; base did not.
+- Specificity: fine-tuned cited education, age, and overall benchmark rates.
+- Factual consistency: the reported rates match source-derived values.
+- Completeness: fine-tuned reproduced the requested four-part structure.
+- Conditional reasoning: fine-tuned misclassified likelihood and missed contact fatigue.
+
+REPORTED CONTACT-FATIGUE CHECK
+evaluation,contacts,fatigue_identified
+2,6,no
+3,14,no
+4,4,no
+7,6,no
+8,4,no
+
+Result: 0 of 5 applicable held-out cases identified the fatigue rule.

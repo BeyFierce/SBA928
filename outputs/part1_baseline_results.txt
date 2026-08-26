@@ -1,0 +1,26 @@
+SBA 928 PART 1 — RECORDED BASELINE RESULTS
+==========================================
+
+Model: google/flan-t5-small
+Evidence held constant: reusable water bottle, 2/5 rating, keeps drinks cold, lid leaked after two weeks.
+Provenance: recovered from the submitted SBA928_report.md.
+
+A — MULTI-PART NUMBERED LIST
+Prompt: Analyze the following customer review. Identify: 1. strongest positive feature 2. primary problem 3. one recommendation.
+Output: 1.
+Assessment: Failed; the model returned only a list marker.
+
+B — SINGLE DIRECT QUESTION
+Prompt: What is the main problem customers report with this product?
+Output: The lid is not working properly.
+Assessment: Correct extraction from the source evidence.
+
+C — POSITIVE FRAMING
+Prompt: What feature do customers like most about this product?
+Output: It's a great product.
+Assessment: Contradicted the 2/5 rating and reported defect; demonstrates leading-question bias.
+
+D — ROLE PLUS CONSTRAINT
+Prompt: You are a market research analyst. In one sentence, state the product defect supported by this review.
+Output: The model echoed the input prompt verbatim.
+Assessment: Failed; it did not analyze the evidence.
