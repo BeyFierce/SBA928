@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from ipaddress import ip_address
 from urllib.parse import urlparse
 
 import requests
@@ -51,5 +52,17 @@ class WebResearcher:
         host = (parsed.hostname or "").lower()
         if host in {"localhost", "127.0.0.1", "0.0.0.0"} or host.endswith(".local"):
             raise ValueError("Local or private URLs are not supported.")
+        try:
+            address = ip_address(host)
+        except ValueError:
+            address = None
+        if address and (
+            address.is_private
+            or address.is_loopback
+            or address.is_link_local
+            or address.is_reserved
+            or address.is_multicast
+            or address.is_unspecified
+        ):
+            raise ValueError("Local or private URLs are not supported.")
         return str(url)
-

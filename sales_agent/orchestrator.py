@@ -18,7 +18,15 @@ class SalesAgentOrchestrator:
         self.llm = None if demo_mode else StructuredLLM()
 
     def run(self, request: SalesRequest) -> tuple[SalesBrief, list[AgentFinding]]:
-        urls = [str(request.company_url), *map(str, request.competitor_urls)]
+        urls = list(
+            dict.fromkeys(
+                [
+                    str(request.company_url),
+                    *map(str, request.competitor_urls),
+                    *map(str, request.research_urls),
+                ]
+            )
+        )
         documents = [self.researcher.fetch(url) for url in urls]
 
         if self.demo_mode:
@@ -47,4 +55,3 @@ class SalesAgentOrchestrator:
             "sources": [doc.__dict__ for doc in documents],
         }
         return json.dumps(payload, indent=2)
-

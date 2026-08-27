@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field, HttpUrl
 
 
@@ -6,6 +8,13 @@ class SalesRequest(BaseModel):
     company_url: HttpUrl
     product_category: str = Field(min_length=2)
     competitor_urls: list[HttpUrl] = Field(default_factory=list)
+    research_urls: list[HttpUrl] = Field(
+        default_factory=list,
+        description=(
+            "Optional public evidence pages such as press releases, leadership "
+            "pages, annual reports, and job postings."
+        ),
+    )
     value_proposition: str = Field(min_length=5)
     target_customer: str = Field(min_length=2)
     product_overview: str = ""
@@ -15,7 +24,7 @@ class EvidenceItem(BaseModel):
     claim: str
     source_url: str
     source_title: str
-    confidence: str = Field(description="high, medium, or low")
+    confidence: Literal["high", "medium", "low"]
 
 
 class AgentFinding(BaseModel):
@@ -35,4 +44,3 @@ class SalesBrief(BaseModel):
     discovery_questions: list[str]
     risks_and_gaps: list[str]
     sources: list[EvidenceItem]
-

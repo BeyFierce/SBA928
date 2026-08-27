@@ -15,6 +15,10 @@ leadership, and competitive landscape.
   assigns a final agent to synthesize the one-page brief.
 - **Evidence-first prompting:** reduces unsupported factual claims and requires
   the workflow to expose limitations.
+- **Document parsing:** turns optional PDF, DOCX, TXT, or Markdown product
+  material into bounded context without storing the uploaded file.
+- **Deterministic quality review:** checks section completeness, source diversity,
+  and low-confidence evidence before a brief is downloaded.
 
 ## Code structure
 
@@ -23,10 +27,13 @@ leadership, and competitive landscape.
   brief models.
 - `sales_agent/research.py` — validates and extracts bounded text from supplied
   public URLs.
+- `sales_agent/documents.py` — extracts bounded text from optional product files.
 - `sales_agent/prompts.py` — task-specific prompts and safety constraints.
 - `sales_agent/llm.py` — structured OpenAI model call.
 - `sales_agent/orchestrator.py` — routes work across specialists and synthesis.
 - `sales_agent/demo.py` — testable no-cost demonstration path.
+- `sales_agent/quality.py` — deterministic report-readiness checks.
+- `sales_agent/rendering.py` — downloadable one-page Markdown generation.
 - `tests/` — input, URL-safety, and demo-pipeline tests.
 
 ## Prompt-engineering approach
@@ -48,6 +55,10 @@ which reduces context size and makes its responsibility explicit.
    remain testable without a key.
 5. **Prompt injection inside webpages** — tell agents to treat source text as
    untrusted evidence, never as instructions.
+6. **Optional product sheets use several formats** — provide a single bounded
+   parser for PDF, DOCX, TXT, and Markdown uploads.
+7. **A valid schema can still contain weak evidence** — show source count,
+   completeness, low-confidence warnings, and an explicit human-review status.
 
 ## Time management record
 
@@ -61,12 +72,13 @@ which reduces context size and makes its responsibility explicit.
 
 ## Production deployment plan
 
-Deploy the Streamlit app in a managed container or Streamlit Community Cloud.
-Keep the API key in a managed secret store rather than source control. Add user
-authentication, request limits, logging with sensitive-data redaction, source
-allow/deny policies, monitoring, and automated tests. Cache safe public content
-with expiration to reduce cost. A production research service should support
-JavaScript-rendered pages and honor site access rules.
+The included Dockerfile and health check create a repeatable deployment unit.
+Production should run stateless containers behind TLS and authentication, keep
+the API key in a managed secret store, move slow jobs to a queue, and apply
+per-user limits. Logs must redact product documents, customer data, prompts, and
+responses. Public-content caching should expire quickly, and outbound requests
+need redirect revalidation and a controlled egress policy. See `DEPLOYMENT.md`
+for scalability, security, monitoring, maintenance, backup, and rollback details.
 
 ## Evaluation plan
 
@@ -75,3 +87,16 @@ unsupported claims, missing required sections, sales usefulness, latency, and
 cost. Compare the multi-agent version to a single-prompt baseline and record
 which approach produces the most reliable one-page brief.
 
+Offline experiments completed during this revision cover typed vs. free-form
+handoffs, chained vs. single-responsibility design, and evidence-first prompt
+invariants. A live model A/B could not be completed because the account returned
+HTTP 429 `insufficient_quota`; no results were fabricated. The exact methods,
+observations, decision record, and next live test are in `EXPERIMENT_RESULTS.md`.
+
+## Output package
+
+- `SAMPLE_ACCOUNT_BRIEF.md` — sourced, human-reviewed example.
+- Markdown download — concise one-page report for the sales representative.
+- JSON download — structured evidence for audit or downstream integration.
+- Specialist output expander — inspectable intermediate agent results.
+- Quality panel — completeness, unique-source count, and review warnings.
