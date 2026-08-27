@@ -1,37 +1,52 @@
-"""Fast integrity tests that do not download or train a language model."""
+from pydantic import ValidationError
 
-from __future__ import annotations
-
-import csv
-import json
-from pathlib import Path
-
-from market_data import CLEAN_CSV, ROOT, read_jsonl
-from review import review
+from sales_agent.demo import demo_brief, demo_findings
+from sales_agent.research import WebResearcher
+from sales_agent.schemas import SalesRequest
 
 
-def test_split_counts_and_uniqueness() -> None:
-    errors, counts = review(ROOT / "data/splits")
-    assert errors == []
-    assert counts == {"train.jsonl": 149, "validation.jsonl": 32, "eval_holdout.jsonl": 33}
+def sample_request() -> SalesRequest:
+    return SalesRequest(
+        product_name="SecureFlow Cloud",
+        company_url="https://example.com",
+        product_category="Cloud security",
+        competitor_urls=["https://competitor.example.com"],
+        value_proposition="Reduce investigation time with unified security visibility.",
+        target_customer="CISO",
+    )
 
 
-def test_cleaned_dataset_removes_duration() -> None:
-    with CLEAN_CSV.open(encoding="utf-8", newline="") as handle:
-        fields = next(csv.reader(handle))
-    assert "duration" not in fields
-    assert {"source_row", "age_group", "converted"}.issubset(fields)
+def test_request_validation():
+    request = sample_request()
+    assert request.company_url.host == "example.com"
 
 
-def test_comparison_guard_cases() -> None:
-    records = read_jsonl(ROOT / "data/evaluation/comparison_cases.jsonl")
-    assert len(records) == 8
-    assert [record["metadata"]["campaign_contacts"] for record in records] == [1, 6, 14, 4, 2, 3, 6, 4]
-    assert sum(record["metadata"]["fatigue_rule_applies"] for record in records) == 5
+def test_invalid_url_rejected():
+    try:
+        SalesRequest(
+            product_name="Test",
+            company_url="not-a-url",
+            product_category="Security",
+            value_proposition="A useful value proposition",
+            target_customer="CISO",
+        )
+    except ValidationError:
+        return
+    raise AssertionError("Invalid URL should fail validation")
 
 
-def test_reported_training_metrics_are_labeled() -> None:
-    payload = json.loads((ROOT / "outputs/reported_training_metrics.json").read_text(encoding="utf-8"))
-    assert payload["provenance"] == "recovered from the submitted SBA928_report.md"
-    assert payload["final_training_loss"] == 0.5686
-    assert payload["validation_loss"]["5"] == 0.2676
+def test_local_url_blocked():
+    try:
+        WebResearcher._validate_url("http://localhost:8501")
+    except ValueError:
+        return
+    raise AssertionError("Local URLs should be blocked")
+
+
+def test_demo_pipeline():
+    request = sample_request()
+    finding = demo_findings(request, str(request.company_url), "Company Analyst")
+    brief = demo_brief(request, [finding])
+    assert brief.prospect_name == "example.com"
+    assert brief.discovery_questions
+

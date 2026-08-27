@@ -1,16 +1,6 @@
+.env
 .venv/
 __pycache__/
-*.py[cod]
 .pytest_cache/
-.DS_Store
+*.pyc
 
-# Expanded source/processed files are reproducible from the tracked archives.
-data/raw/bank-additional/
-data/raw/source_archives/
-data/raw/__MACOSX/
-data/processed/*.csv
-
-# GitHub stores checkpoint metadata; recreate large binary weights locally.
-models/flan-market-research-final/*.safetensors
-models/flan-market-research-final/pytorch_model*.bin
-models/flan-market-research-final/checkpoint-*/
